@@ -5,7 +5,13 @@
   "projects": {
     "client": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css",
+          "skipTests": true,
+          "path": "src" 
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -16,6 +22,8 @@
             "main": "src/main.ts",
             "index": "src/index.html",
             "outputPath": "dist/client",
+            "poll": 1000,
+            "watch": true,
             "polyfills": [
               "zone.js"
             ],
@@ -30,6 +38,7 @@
               "src/styles.css"
             ]
           },
+          
           "configurations": {
             "production": {
               "budgets": [
