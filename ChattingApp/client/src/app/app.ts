@@ -5,16 +5,19 @@ import { Nav } from "../layout/nav/nav";
 import { AccountService } from '../core/services/account-service';
 import { Home } from "../features/home/home";
 import { User } from '../type/user';
+import { Router, RouterOutlet } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav, Home],
+  imports: [Nav, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
+  protected router = inject(Router);
   protected readonly title  = 'Dating App';
   protected members = signal<User[]>([])
   async ngOnInit() {
