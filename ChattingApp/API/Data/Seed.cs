@@ -31,12 +31,13 @@ public class Seed
                 Email = member.Email,
                 DisplayName = member.DisplayName,
                 ImageUrl = member.ImageUrl,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Pa$$w0rd")),
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Password")),
                 PasswordSalt = hmac.Key,
                 Member = new Member
                 {
                     Id = member.Id,
                     DisplayName = member.DisplayName,
+                    Description = member.Description,
                     DateOfBirth = member.DateOfBirth,
                     ImageUrl = member.ImageUrl,
                     Gender = member.Gender,
