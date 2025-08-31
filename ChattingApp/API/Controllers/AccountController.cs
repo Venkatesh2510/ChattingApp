@@ -16,6 +16,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDTO registerDto)
     {
+        Console.WriteLine("In");
         if (await EmailExists(registerDto.Email))
         {
             return BadRequest("Email is already in use");
@@ -26,7 +27,15 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
             Email = registerDto.Email,
             DisplayName = registerDto.DisplayName,
             PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDto.Password)),
-            PasswordSalt = hmac.Key
+            PasswordSalt = hmac.Key,
+            Member = new Member
+            {
+                DisplayName = registerDto.DisplayName,
+                Gender = registerDto.Gender,
+                City = registerDto.City,
+                Country = registerDto.Country,
+                DateOfBirth = registerDto.DateOfBirth
+            }
         };
 
         context.Users.Add(user);
