@@ -11,10 +11,27 @@ public class AppDbContext : DbContext
     public DbSet<AppUser> Users { get; set; }
     public DbSet<Member> Members { get; set; }
     public DbSet<Photo> Photos { get; set; }
+    public DbSet<MemberLike> Likes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<MemberLike>()
+        .HasKey(x => new { x.SourceMemberId, x.TargetMemberId });
+
+        modelBuilder.Entity<MemberLike>()
+        .HasOne(s => s.SourceMember)
+        .WithMany(t => t.LikedMembers)
+        .HasForeignKey(s => s.SourceMemberId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<MemberLike>()
+        .HasOne(s => s.TargetMember)
+        .WithMany(t => t.LikedByMembers)
+        .HasForeignKey(s => s.TargetMemberId)
+        .OnDelete(DeleteBehavior.NoAction);
+
         var DateTimeConverter = new ValueConverter<DateTime, DateTime>(
             v => v.ToUniversalTime(),
             v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
@@ -24,7 +41,7 @@ public class AppDbContext : DbContext
         {
             foreach (var property in entityType.GetProperties())
             {
-                if(property.ClrType == typeof(DateTime))
+                if (property.ClrType == typeof(DateTime))
                 {
                     property.SetValueConverter(DateTimeConverter);
                 }

@@ -21,6 +21,18 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     }
   }
 
+  const invalidateCache = (urlPattern: string) => {
+    for(const key of cache.keys()){
+      if(key.includes(urlPattern)){
+        cache.delete(key);
+      }
+    }
+  }
+
+  if(req.method.includes('POST') && req.url.includes('/likes')){
+    invalidateCache('/likes')
+  }
+
   busyService.busy();
   return next(req).pipe(
     delay(500),
