@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       return new Promise<void>((resolve) => {
         setTimeout(async () => {
           try {
-            return lastValueFrom(initService.Init())
+            return lastValueFrom(initService.init());
           }
           finally {
             const spash = document.getElementById('initial-splash');
